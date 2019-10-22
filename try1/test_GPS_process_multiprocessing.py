@@ -6,6 +6,7 @@ def read(path, sep, usecols):
     global in_txt
     in_txt = pd.read_csv(path, sep=sep, usecols=usecols)
 
+
 def process(Noo_list):
     global in_txt
     tmp_ans = pd.DataFrame(columns=['Noo', '8', 'jing', 'wei'])
@@ -37,6 +38,8 @@ def process(Noo_list):
         if flag:
             tmp_ans = tmp_ans.append(temp)
     return tmp_ans
+
+
 #
 # def main():
 #     max_difference = 1
@@ -63,13 +66,13 @@ if __name__ == '__main__':
     Noo_list = Noo_list.sort_values()
     #    ans = pd.DataFrame(columns=['Noo', '8', 'jing', 'wei'])
 
-    processes = 4
+    processes = 11
 
     length = Noo_list.size
     process_length = int(length / processes)
     list = [pd.Series(name='Noo')]
     for i in range(processes):
-        list.append(Noo_list.iloc[i*process_length:(i+1)*process_length])
+        list.append(Noo_list.iloc[i * process_length:(i + 1) * process_length])
 
     pool = multiprocessing.Pool(processes=processes)
     pool_results = pool.map_async(process, list).get()
@@ -78,6 +81,6 @@ if __name__ == '__main__':
 
     ans = pd.DataFrame(columns=['Noo', '8', 'jing', 'wei'])
     for item in pool_results:
-        ans=ans.append(item)
+        ans = ans.append(item)
 
     ans.to_csv('./processed_multiprocessing.csv', index=False)
