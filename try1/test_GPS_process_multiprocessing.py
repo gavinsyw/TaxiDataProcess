@@ -3,12 +3,14 @@ import multiprocessing
 
 
 def read(path, sep, usecols):
-    global in_txt
     in_txt = pd.read_csv(path, sep=sep, usecols=usecols)
+    return in_txt
+
+
+in_txt = read('./1804010000.txt', sep='|', usecols=[0, 9, 10, 11])
 
 
 def process(Noo_list):
-    global in_txt
     tmp_ans = pd.DataFrame(columns=['Noo', '8', 'jing', 'wei'])
     for item in Noo_list:
         flag = True
@@ -58,7 +60,6 @@ def process(Noo_list):
 
 if __name__ == '__main__':
     max_difference = 1
-    read('./1804010000.txt', sep='|', usecols=[0, 9, 10, 11])
     # in_txt = in_txt.sort_values(by='Noo')
 
     Noo_list = in_txt['Noo']
